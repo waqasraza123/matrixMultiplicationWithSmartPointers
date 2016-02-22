@@ -1,3 +1,4 @@
+//STL implementation of linear and strassen algo for matrix multiplication
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -12,7 +13,7 @@ using namespace std;
 
 int numberOfRows = 4, numberOfColumns = 4;
 
-vector<vector <int> > simpleMultplication(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj)
+vector<vector <int> > simpleMultiplication(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj)
 {
 	int numberOfRows = vecAObj.size();
 	int numberOfColumns = vecAObj[0].size();
@@ -30,6 +31,8 @@ vector<vector <int> > simpleMultplication(vector<vector <int> > vecAObj, vector<
 	return outputResult;
 }
 
+
+//sum the elements of both vectors
 vector<vector <int> > sum(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
 
 	int n = vecAObj.size();
@@ -108,6 +111,7 @@ vector<vector <int> > strassen(vector<vector <int> > vecAObj, vector<vector <int
 
 		int i, j;
 
+		//dividing the matrices in 4 sub-matrices:
 		for (i = 0; i < n/2; i++) {
 			for (j = 0; j < n/2; j++) {
 				a11[i][j] = vecAObj[i][j];
@@ -200,42 +204,42 @@ int main(){
 
 	//output
 	//here i am outputting the linear mulitplication
-    cout << "Linear Multiplication"<<endl;
-    outputResult = simpleMultplication(vecAObj, vecBObj);
+    cout << "Linear Multiplication ========================"<<endl;
+    outputResult = simpleMultiplication(vecAObj, vecBObj);
     int numberOfRows = outputResult.size();
 	int numberOfColumns = outputResult[0].size();
-	cout << "\n";
+	cout << endl;
 	for (int i = 0; i < numberOfRows; i++) {
-		cout << "[";
+		cout << endl;
 		for (int j = 0; j < numberOfColumns; j++) {
 			if (j == numberOfColumns - 1)
 				cout << outputResult[i][j];
 			else
 				cout << outputResult[i][j] << " ";
 		}
-		cout << "]\n";
+		cout << endl;
 	}
-	cout << "\n";
+	cout << endl;
     
     
     //output the result of strassen's algorightem
-    cout << "Strassens's Algorithem"<<endl;
+    cout << "Strassens's Algorithem ======================="<<endl;
     outputResult = strassen(vecAObj, vecBObj);
     
 	numberOfRows = outputResult.size();
 	numberOfColumns = outputResult[0].size();
-	cout << "\n";
+	cout << endl;
 	for (int i = 0; i < numberOfRows; i++) {
-		cout << "[";
+		cout << endl;
 		for (int j = 0; j < numberOfColumns; j++) {
 			if (j == numberOfColumns - 1)
 				cout << outputResult[i][j];
 			else
 				cout << outputResult[i][j] << " ";
 		}
-		cout << "]\n";
+		cout << endl;
 	}
-	cout << "\n";
+	cout << endl;
     
     return 0;
 }
