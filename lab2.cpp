@@ -1,4 +1,4 @@
-//STL implementation of linear and strassen algo for matrix multiplication
+//STL implementation of linear and strassenImplementation algo for matrix multiplication
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -23,17 +23,17 @@ vector<vector <int> > simpleMultiplication(vector<vector <int> > vecAObj, vector
 	outputResult.resize(numberOfRows, vector <int> (dimZ, 0));
 	for (int i = 0; i < numberOfRows; i++)
 		for (int j = 0; j < dimZ; j++) {
-			int sum = 0;
+			int addElemOfBothMatrices = 0;
 			for (int k = 0; k < numberOfColumns; k++)
-				sum = sum + (vecAObj[i][k] * vecBObj[k][j]);
-			outputResult[i][j] = sum;
+				addElemOfBothMatrices = addElemOfBothMatrices + (vecAObj[i][k] * vecBObj[k][j]);
+			outputResult[i][j] = addElemOfBothMatrices;
 		}
 	return outputResult;
 }
 
 
-//sum the elements of both vectors
-vector<vector <int> > sum(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
+//addElemOfBothMatrices the elements of both vectors
+vector<vector <int> > addElemOfBothMatrices(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
 
 	int n = vecAObj.size();
 	vector<vector <int> > result;
@@ -48,7 +48,7 @@ vector<vector <int> > sum(vector<vector <int> > vecAObj, vector<vector <int> > v
 	return result;
 }
 
-vector<vector <int> > sub(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
+vector<vector <int> > subtractElemOfBothMatrices(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
 
 	int n = vecAObj.size();
 	vector<vector <int> > result;
@@ -63,7 +63,7 @@ vector<vector <int> > sub(vector<vector <int> > vecAObj, vector<vector <int> > v
 	return result;
 }
 
-vector<vector <int> > strassen(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
+vector<vector <int> > strassenImplementation(vector<vector <int> > vecAObj, vector<vector <int> > vecBObj) {
 
 	int n = vecAObj.size();
 
@@ -111,7 +111,7 @@ vector<vector <int> > strassen(vector<vector <int> > vecAObj, vector<vector <int
 
 		int i, j;
 
-		//dividing the matrices in 4 sub-matrices:
+		//dividing the matrices in 4 subtractElemOfBothMatrices-matrices:
 		for (i = 0; i < n/2; i++) {
 			for (j = 0; j < n/2; j++) {
 				a11[i][j] = vecAObj[i][j];
@@ -126,42 +126,42 @@ vector<vector <int> > strassen(vector<vector <int> > vecAObj, vector<vector <int
 			}
 		}
 
-		aResult = sum(a11, a22); // a11 + a22
-		bResult = sum(b11, b22); // b11 + b22
-		p1 = strassen(aResult, bResult); // p1 = (a11+a22) * (b11+b22)
+		aResult = addElemOfBothMatrices(a11, a22); // a11 + a22
+		bResult = addElemOfBothMatrices(b11, b22); // b11 + b22
+		p1 = strassenImplementation(aResult, bResult); // p1 = (a11+a22) * (b11+b22)
 
-		aResult = sum(a21, a22); // a21 + a22
-		p2 = strassen(aResult, b11); // p2 = (a21+a22) * (b11)
+		aResult = addElemOfBothMatrices(a21, a22); // a21 + a22
+		p2 = strassenImplementation(aResult, b11); // p2 = (a21+a22) * (b11)
 
-		bResult = sub(b12, b22); // b12 - b22
-		p3 = strassen(a11, bResult); // p3 = (a11) * (b12 - b22)
+		bResult = subtractElemOfBothMatrices(b12, b22); // b12 - b22
+		p3 = strassenImplementation(a11, bResult); // p3 = (a11) * (b12 - b22)
 
-		bResult = sub(b21, b11); // b21 - b11
-		p4 = strassen(a22, bResult); // p4 = (a22) * (b21 - b11)
+		bResult = subtractElemOfBothMatrices(b21, b11); // b21 - b11
+		p4 = strassenImplementation(a22, bResult); // p4 = (a22) * (b21 - b11)
 
-		aResult = sum(a11, a12); // a11 + a12
-		p5 = strassen(aResult, b22); // p5 = (a11+a12) * (b22)	
+		aResult = addElemOfBothMatrices(a11, a12); // a11 + a12
+		p5 = strassenImplementation(aResult, b22); // p5 = (a11+a12) * (b22)	
 
-		aResult = sub(a21, a11); // a21 - a11
-		bResult = sum(b11, b12); // b11 + b12
-		p6 = strassen(aResult, bResult); // p6 = (a21-a11) * (b11+b12)
+		aResult = subtractElemOfBothMatrices(a21, a11); // a21 - a11
+		bResult = addElemOfBothMatrices(b11, b12); // b11 + b12
+		p6 = strassenImplementation(aResult, bResult); // p6 = (a21-a11) * (b11+b12)
 
-		aResult = sub(a12, a22); // a12 - a22
-		bResult = sum(b21, b22); // b21 + b22
-		p7 = strassen(aResult, bResult); // p7 = (a12-a22) * (b21+b22)
+		aResult = subtractElemOfBothMatrices(a12, a22); // a12 - a22
+		bResult = addElemOfBothMatrices(b21, b22); // b21 + b22
+		p7 = strassenImplementation(aResult, bResult); // p7 = (a12-a22) * (b21+b22)
 
 										 // calculating c21, c21, c11 e c22:
 
-		c12 = sum(p3, p5); // c12 = p3 + p5
-		c21 = sum(p2, p4); // c21 = p2 + p4
+		c12 = addElemOfBothMatrices(p3, p5); // c12 = p3 + p5
+		c21 = addElemOfBothMatrices(p2, p4); // c21 = p2 + p4
 
-		aResult = sum(p1, p4); // p1 + p4
-		bResult = sum(aResult, p7); // p1 + p4 + p7
-		c11 = sub(bResult, p5); // c11 = p1 + p4 - p5 + p7
+		aResult = addElemOfBothMatrices(p1, p4); // p1 + p4
+		bResult = addElemOfBothMatrices(aResult, p7); // p1 + p4 + p7
+		c11 = subtractElemOfBothMatrices(bResult, p5); // c11 = p1 + p4 - p5 + p7
 
-		aResult = sum(p1, p3); // p1 + p3
-		bResult = sum(aResult, p6); // p1 + p3 + p6
-		c22 = sub(bResult, p2); // c22 = p1 + p3 - p2 + p6
+		aResult = addElemOfBothMatrices(p1, p3); // p1 + p3
+		bResult = addElemOfBothMatrices(aResult, p6); // p1 + p3 + p6
+		c22 = subtractElemOfBothMatrices(bResult, p2); // c22 = p1 + p3 - p2 + p6
 
 									 // Grouping the results obtained in vecAObj single matrix
 		for (i = 0; i < n/2; i++) {
@@ -222,9 +222,9 @@ int main(){
 	cout << endl;
     
     
-    //output the result of strassen's algorightem
-    cout << "Strassens's Algorithem ======================="<<endl;
-    outputResult = strassen(vecAObj, vecBObj);
+    //output the result of strassenImplementation's algorightem
+    cout << "strassenImplementations's Algorithem ======================="<<endl;
+    outputResult = strassenImplementation(vecAObj, vecBObj);
     
 	numberOfRows = outputResult.size();
 	numberOfColumns = outputResult[0].size();
